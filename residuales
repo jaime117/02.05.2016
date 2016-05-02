@@ -1,0 +1,41 @@
+pibmex <- read.csv("C:\\Users\\SALA-C18\\Documents\\pibmex.csv")
+pibmexts<- ts(pibmex [,2], start = 1961, end= 2014)
+plot (pibmexts)
+
+require (fpp)
+plot (pibmexts, main="tasa crec. pib mexico",
+      ylab="tasa de creciemiento", xlab="años")
+res2<-residuals(snaive(pibmexts))
+res3<-residuals (rwf(pibmexts,drift=T))
+res2
+res3
+
+plot(res2, main="residuals de ingenuo estacional",
+     ylab="residuals", xlab="años")####varianza constante
+Acf(res2, main="ACF residuals")###ver si hay correlacion o no
+hist(res2,main = "histograma residuales") ####normalidad
+
+
+plot(res3, main="residuals de ingenuo estacional",
+     ylab="residuals", xlab="años")
+Acf(res3, main="ACF residuals")###ver si hay correlacion o no
+hist(res3,main = "histograma residuales") 
+
+
+#########analisis con el metodo de la media y el ingenuo
+res4<-residuals(meanf(pibmexts))
+plot(res4, main="residuals de la media",
+     ylab="residuals", xlab="años")
+Acf(res4, main="ACF residuals")###ver si hay correlacion o no
+hist(res4,main = "histograma residuales") 
+
+
+res5<-residuals(naive(pibmexts))
+plot(res5, main="residuals de ingenuo",
+     ylab="residuals", xlab="años")
+Acf(res5, main="ACF residuals")###ver si hay correlacion o no
+hist(res5,main = "histograma residuales") 
+
+
+Box.test (res2,lag=10, fitdf=0)####box pierce, mayor a .5 no se rechaza la hipotesis nula
+Box.test (res3,lag=10, fitdf=0)
